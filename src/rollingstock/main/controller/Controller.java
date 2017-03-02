@@ -17,9 +17,9 @@ public class Controller {
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public void run() {
-        this.printToConsole("Current timetable of trains:\n" +
-                RollingStock.getAllStocks().keySet() + "\n");
         while (true) {
+            this.printToConsole("Current timetable of trains:\n" +
+                    RollingStock.getAllStocks().keySet() + "\n");
             try {
                 printToConsole("Input targeted direction (print 'exit' to end):");
                 String direction = readString();
@@ -27,12 +27,25 @@ public class Controller {
                     return;
                 }
                 stock = getStockByDirection(direction);
-                printToConsole("Input range of count of passengers 'from' - 'to': (both inclusive)");
-                int from = Integer.parseInt(readString());
-                int to = Integer.parseInt(readString());
-                printToConsole("Total cont of passengers and baggage: " + getTotalCountPassAndBaggs() + "\n");
+                int from = 0;
+                int to = 0;
+                while (true) {
+                    try {
+                        printToConsole("Input range of count of passengers 'from' - 'to': (both inclusive)");
+                        from = Integer.parseInt(readString());
+                        to = Integer.parseInt(readString());
+                        if (from < 0 || to < 0 || from > to){
+                            printToConsole("Incorrect range. Try again.");
+                        }else break;
+                    } catch (NumberFormatException e) {
+                        printToConsole("Incorrect range. Try again.");
+                    }
+                }
+                printToConsole("\n" + direction + ":\n-----------------------");
+                printToConsole("Total count of passengers and baggage: " + getTotalCountPassAndBaggs() + "\n");
                 printToConsole("View coaches by comfort level:\n" + sortStockByComfortLevel() + "\n");
                 printToConsole("View coaches by count range:\n" + getCoachesByPassRange(from, to) + "\n");
+                printToConsole("==================================================================\n" );
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -82,7 +95,7 @@ public class Controller {
         for (Wagon wagon : stock.getStock()) {
             if (wagon instanceof PassengerCoach) {
                 if (((PassengerCoach) wagon).getCountOfPassengers() >= fromCount
-                        || ((PassengerCoach) wagon).getCountOfPassengers() <= toCount) {
+                        && ((PassengerCoach) wagon).getCountOfPassengers() <= toCount) {
                     list.add(wagon);
                 }
             }
@@ -95,7 +108,7 @@ public class Controller {
     }
     public void printToFile(String message) {
         view.writeToFile(message);
-    }
+    } //как вариант
     public static String readString() throws IOException {
         return reader.readLine();
     }

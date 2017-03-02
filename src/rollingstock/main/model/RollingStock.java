@@ -44,11 +44,4 @@ public class RollingStock {
     public static Map<String, List<Wagon>> getAllStocks() {
         return allStocks;
     }
-
-//    @Override
-//    public String toString() {
-//        return "RollingStock{" +
-//                "rollingStock=" + rollingStock +
-//                '}';
-//    }
 }
