@@ -1,5 +1,6 @@
-package rollingstock.main.model;
+package bean;
 
+/*Класс сущность - Локомотив*/
 public class Locomotive extends Wagon {
     private static final int COMFORT_LEVEL = 15;
     private int countOfCrew;
@@ -10,6 +11,7 @@ public class Locomotive extends Wagon {
         this.number = id;
     }
 
+    /*Получение количества команды*/
     public int getCountOfCrew() {
         return countOfCrew;
     }

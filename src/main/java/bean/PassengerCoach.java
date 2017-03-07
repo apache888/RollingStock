@@ -1,5 +1,6 @@
-package rollingstock.main.model;
+package bean;
 
+/*Класс сущность - Пассажирский вагон*/
 public class PassengerCoach extends Wagon {
     private int countOfPassengers;
 
@@ -8,6 +9,8 @@ public class PassengerCoach extends Wagon {
         this.comfortLevel = (int) (Math.random() * 10 + 2);
         this.number = id;
     }
+
+    /*Получение количества пассажиров*/
     public int getCountOfPassengers() {
         return countOfPassengers;
     }

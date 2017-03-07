@@ -1,5 +1,6 @@
-package rollingstock.main.model;
+package bean;
 
+//*Класс сущность - Багажный вагон*/
 public class BaggageVan extends Wagon {
     private static final int COMFORT_LEVEL = 0;
     private int countOfBaggage;
@@ -10,6 +11,7 @@ public class BaggageVan extends Wagon {
         this.number = id;
     }
 
+    /*Получение количества багажа*/
     public int getCountOfBaggage() {
         return countOfBaggage;
     }
