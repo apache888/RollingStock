@@ -1,6 +1,7 @@
 package controller;
 
 import model.MainModel;
+import view.ConsoleHelper;
 import view.UIView;
 
 /**
@@ -10,17 +11,6 @@ import view.UIView;
 public class Controller {
     private MainModel model;
     private UIView view;
-
-    /*Предоставляет расписание составов для отображения пользователю*/
-    public void onShowTimetable() {
-        model.loadAllStocks();
-        view.writeTimetable(MainModel.getAllStocks());
-    }
-
-    /*Инициализирует цепочку действий для инициализации состава по направлению у модели*/
-    public void onLoadStockByDirection(String direction) {
-        model.loadStockByDirection(direction);
-    }
 
     /*Предоставление общего количества пассажиров и багажа для отображения пользователю*/
     public void onTotalCountPassAndBaggs() {
@@ -33,8 +23,24 @@ public class Controller {
     }
 
     /*Предоставление списка вагон по заданому интервалу количества пассажиров для отображения пользователю*/
-    public void onCoachesByPassRange(int from, int to) {
-        view.writeCoachesByRange(model.getCoachesByPassRange(from, to));
+    public void onFindByPassRange() {
+        while (true) {
+            try {
+                int from = ConsoleHelper.readFrom();
+                int to = ConsoleHelper.readTo();
+                if (from <= to) {
+                    view.writeWagonsByRange(model.getWagonsByPassRange(from, to));
+                    break;
+                } else throw new IllegalArgumentException();
+            } catch (IllegalArgumentException e) {
+                ConsoleHelper.writeToConsole("Wrong range. Try again.\n");
+            }
+        }
+    }
+
+    /*Предоставление списка вагонов*/
+    public void onShowStock() {
+        view.writeAllStock(model.getStock());
     }
 
     /*Назначение данному контролеру Отображения*/

@@ -1,6 +1,4 @@
-import controller.Controller;
-import model.MainModel;
-import view.UIView;
+import view.ConsoleHelper;
 
 /**
  * Create by Roman Hayda on 07.03.2017.
@@ -9,15 +7,9 @@ import view.UIView;
 public class Program {
 
     public static void main(String[] args) {
-        MainModel model = new MainModel();
-       Controller controller = new Controller();
-        UIView view = new UIView();
 
-        view.setController(controller);
-        controller.setModel(model);
-        controller.setView(view);
-
-        view.showTimetable();
-        view.showInfoByDirection();
+        ConsoleHelper consoleHelper = new ConsoleHelper();
+        consoleHelper.init();
+        consoleHelper.showCommandsMenu();
     }
 }

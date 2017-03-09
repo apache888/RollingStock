@@ -1,20 +1,17 @@
 package view;
 
-import bean.Wagon;
 import controller.Controller;
+import model.Wagon;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Map;
+
+import static view.ConsoleHelper.writeToConsole;
 
 /**
  * Create by Roman Hayda on 07.03.2017.
  */
 /*Класс представления информации пользователю*/
 public class UIView {
-    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Controller controller;
 
     /*Назначение контролера данному вью*/
@@ -22,51 +19,24 @@ public class UIView {
         this.controller = controller;
     }
 
-    /*Генерация события отображение расписания и передача инструкций контроллеру*/
-    public void showTimetable() {
-        controller.onShowTimetable();
+    /*Генерация события - отображение всех вагонов состава*/
+    public void fireEventShowStock() {
+        controller.onShowStock();
     }
 
-    /*Генерация события отображение информации по данному поезду.
-    * внутри метода передаются соответствующие инструкции контролеру для получения данных*/
-    public void showInfoByDirection() {
-        while (true) {
-            try {
-                writeToConsole("Input targeted direction (print 'exit' to end):");
-                String direction = readString();
-                if (direction.equalsIgnoreCase("exit")) {
-                    return;
-                }
-                controller.onLoadStockByDirection(direction);
-                int from;
-                int to;
-                while (true) {
-                    try {
-                        writeToConsole("Input range of count of passengers 'from' - 'to': (both inclusive)");
-                        from = Integer.parseInt(readString());
-                        to = Integer.parseInt(readString());
-                        if (from < 0 || to < 0 || from > to) {
-                            writeToConsole("Incorrect range. Try again.");
-                        } else break;
-                    } catch (NumberFormatException e) {
-                        writeToConsole("Incorrect range. Try again.");
-                    }
-                }
-
-                controller.onTotalCountPassAndBaggs();
-                controller.onSortStockByComfortLevel();
-                controller.onCoachesByPassRange(from, to);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    /*Генерация события - отображение общего количества пассажиров и багажа*/
+    public void fireEventTotalCount() {
+        controller.onTotalCountPassAndBaggs();
     }
 
-    /*Представление расписания*/
-    public void writeTimetable(Map map) {
-        writeToConsole("Current timetable of trains:\n" +
-                map.keySet() + "\n");
+    /*Генерация события - отображение списка вагонов по уровню комфорта*/
+    public void fireEventSortByCL() {
+        controller.onSortStockByComfortLevel();
+    }
+
+    /*Генерация события - отображение списка вагон по заданому интервалу количества пассажиров*/
+    public void fireEventFindByRange() {
+        controller.onFindByPassRange();
     }
 
     /*Представление общего количества пассажиров и багажа*/
@@ -76,20 +46,32 @@ public class UIView {
 
     /*Представление вагонов по уровню комфорта*/
     public void writeStockByCL(List<Wagon> stock) {
-        writeToConsole("Coaches by comfort level:\n" + stock + "\n");
+        writeToConsole("\nCoaches by comfort level:\n");
+        for (Wagon wagon : stock) {
+            writeToConsole(wagon.toString());
+        }
+        writeToConsole("\n");
     }
 
     /*Представление вагон по заданому интервалу количества пассажиров*/
-    public void writeCoachesByRange(List<Wagon> stock) {
-        writeToConsole("Coaches by count range:\n" + stock + "\n");
+    public void writeWagonsByRange(List<Wagon> stock) {
+        writeToConsole("\nCoaches by count range:\n");
+        if (stock.isEmpty()) {
+            writeToConsole("There are no wagons for this rang\n");
+        } else {
+            for (Wagon wagon : stock) {
+                writeToConsole(wagon.toString());
+            }
+            writeToConsole("\n");
+        }
     }
 
-    /*Считывание данных из консоли и представление их в виде строки*/
-    public static String readString() throws IOException {
-        return reader.readLine();
-    }
-    /*Отображение полученной строки в консоль*/
-    public void writeToConsole(String message) {
-        System.out.println(message);
+    /*Представление списка вагонов*/
+    public void writeAllStock(List<Wagon> stock) {
+        writeToConsole("\nAll wagons of rolling stock:\n");
+        for (Wagon wagon : stock) {
+            writeToConsole(wagon.toString());
+        }
+        writeToConsole("\n");
     }
 }
